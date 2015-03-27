@@ -38,12 +38,23 @@ class Cat{
 }
 
 //self-defined class Employee, store in TreeSet;
-class Employee{
+class Worker implements Comparable{
 	private String name;
 	private int age;
-	Employee(String name, int age){
+	Worker(String name, int age){
 		this.name=name;
 		this.age=age;
+	}
+	public int compareTo(Object obj){  //implement Comparable to let the Employee compare age and name to be sorted
+		if(obj instanceof Worker){
+			Worker e=(Worker)obj;
+			if (this.age>e.age)
+				return 1;
+			else if(this.age==e.age)
+				return this.name.compareTo(e.name);
+			return -1;
+		}
+		throw new RuntimeException("This is not an employee");
 	}
 	public String getName() {
 		return name;
@@ -101,13 +112,15 @@ public class CollectionDemo3Set {
 		}
 		
 		//TreeSet store Employee, sort according to age
-		TreeSet<Employee> t= new TreeSet<Employee>();
-		t.add(new Employee("mike",25));
-		t.add(new Employee("mary",28));        //when add the second element, since TreeSet has order, compareTo() will be executed, throw ClassCastException, if didn't declare TreeSet<Employee>
-		t.add(new Employee("joe",32));        //or do not declare TreeSet<Employee>, but in class Employee, let Employee implements Comparable, override compareTo()
-		t.add(new Employee("joe",25));
-		for(Iterator<Employee> it=t.iterator(); it.hasNext();){
-			print(it.next());
+		TreeSet<Worker> t= new TreeSet<Worker>();
+		t.add(new Worker("mike",25));
+		t.add(new Worker("mike",25));
+		t.add(new Worker("mary",28));        //when add the second element, since TreeSet has order, compareTo() will be executed, throw ClassCastException, if didn't declare TreeSet<Employee>
+		t.add(new Worker("joe",32));        //or do not declare TreeSet<Employee>, but in class Employee, let Employee implements Comparable, override compareTo()
+		t.add(new Worker("joe",25));
+		for(Iterator<Worker> it=t.iterator(); it.hasNext();){
+			Worker em=(Worker) it.next();
+			print(em.getName()+"...."+em.getAge());
 		}
 
 	}
